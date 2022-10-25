@@ -2,7 +2,7 @@
 
 > A maioria desses servidores é superutilizada e o cliente já faz uma avaliação usando "Migrate for Anthos and GKE" para ter uma ideia das opções de migração. A AskAnAssociate Stores deseja revisar com você os resultados do [relatório de avaliação](https://htmlpreview.github.io/?https://github.com/fcostabr78/demoMigrateToContainers/blob/main/mfit-report-private-cloud-full3.html) e uma demonstração de uma migração de VM para Containers para cargas de trabalho.
 
-### Resumo do Demo
+### Resumo da Demo
 
 - **Passo 1**: Fazer Deploy da Solução utilizando Máquina Virtual
 - **Passo 2**: Executar a Coleta do Ambiente
