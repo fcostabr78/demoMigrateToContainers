@@ -83,5 +83,38 @@ As transações listadas na tela vêm da VM que fizemos o Deploy.
 
 <br></br>
 :checkered_flag: **Passo 1 concluído com sucesso.** Vamos ao passo 2
+<br></br>
 
+## Executar a Coleta do Ambiente
+
+### Executar conexão SSH com a VM instalada
+```
+$ gcloud compute ssh --zone "${ZONE}" "ledgermonolith-service"  --project "${PROJECT_ID}"
+```
+
+### Download da ferramenta de coleta
+```
+$ mkdir m4a && cd m4a
+$ curl -O "https://mfit-release.storage.googleapis.com/1.12.1/mfit-linux-collect.sh"
+$ chmod +x mfit-linux-collect.sh
+```
+
+### Download da ferramentas de analise
+```
+$ curl -O "https://mfit-release.storage.googleapis.com/1.12.1/mfit"
+$ chmod +x mfit
+```
+
+### Execute a coleta
+```
+$ sudo ./mfit-linux-collect.sh
+```
+
+O script de coleta gera um arquivo TAR chamado m4a-collect-ledgermonolith-service-TIMESTAMP.tar e o salva no diretório atual. O carimbo de data/hora está no formato YYYY-MM-DD-hh-mm.
+
+### Salva o retorno 
+```
+$ ./mfit assess sample m4a-collect-ledgermonolith-service-2022-10-24-17-43.tar --format json > ledgermonolith-mfit-report.json
+$ exit
+```
 
