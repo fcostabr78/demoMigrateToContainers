@@ -79,6 +79,8 @@ $ k get svc frontendgke | awk '{print $4}'
 <br></br>
 5. Faça o login com as credenciais padrão e veja as transações no painel. 
 
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/extrato.png?raw=true)
+
 As transações listadas na tela vêm da VM que fizemos o Deploy.
 
 <br></br>
@@ -250,4 +252,18 @@ endpoints:
 ![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/gen_artefact.png?raw=true)
 
 > Os artefatos gerados podem ser consultados via console. Para isso, em Detalhe da Migração, clique em "Artefacts"<br>
-> Lá estará os objects gerados: Docker File, Deployment. Clique nele e será abeto a lista dos artefatos registrados no Bucket<br>
+> Lá estará os objects gerados: Docker File, Deployment.
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/menu_recursos_gerados.png?raw=true)
+
+> Clique nele e será abeto a lista dos artefatos registrados no Bucket<br>
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/artefatos_gerados.png?raw=true)
+
+5. Selecione todos os arquivos
+6. Clique no botão Download
+7. Copie a instrução $gsutil -m cp \ ...... sugerida
+8. Execute dentro da pasta {HOME}/bank-of-anthos/src/ledgermonolith/ no Cloud Shell
+
+
+
