@@ -295,7 +295,8 @@ $ k delete pods --all
 
 14. Abra no navegador https://**EXTERNAL_IP** para acessar o Bank of Anthos - agora estará apontando o POD que representa a VM migrada.!
 
-
-
+<br><br/>
+<hr/>
+:heart: :cloud: :rocket: **VM Migrada com Sucesso** - fernandocosta@google.com 
 
  
