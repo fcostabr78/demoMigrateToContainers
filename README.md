@@ -136,9 +136,77 @@ $ cloudshell download ${HOME}/ledgermonolith-mfit-report.json
 
 > para ter maiores informações sobre msgs apontadas na avaliação de migracao https://cloud.google.com/migrate/containers/docs/fit-assessment-rules?hl=pt-br
 
-<br><br/>
-> Na etapa a seguir, você criará o cluster do GKE usado como um cluster de processamento. É aqui que você instala o Migrate to Containers e executa a
+> :checkered_flag: **Passo 2 concluído com sucesso.**  Na etapa a seguir, você criará o cluster do GKE usado como um cluster de processamento. É aqui que você instala o Migrate to Containers e executa a
 > migração. Não use o mesmo cluster que o Bank of Anthos em execução para não interromper os serviços. Isso é intencional. Depois que a migração for 
-> concluída, exclua esse cluster de processamento.
+> concluída, exclua esse cluster de processamento. Vamos ao passo 3
 --
+<br></br>
+
+## Preparar Plano de Migração
+
+> Antes de iniciar essa etapa habilite a criacao de service account 
+> em IAM/Organization, Policies, atribuir o enforcement como off as variáveis 
+> e disableServiceAccountKeyCreation e disableServiceAccountCreation.
+> Também habilitar actions API e Cloud Resource Manager API
+
+### Criar o cluster GKE de processamento migration-processing e instalar o migrate to containers
+
+```
+$ alias k=kubectl
+$ gcloud container clusters create migration-processing \
+--project=${PROJECT_ID} --zone=${ZONE} \
+--machine-type e2-standard-4 \
+--num-nodes 1 \
+--subnetwork default --scopes "https://www.googleapis.com/auth/cloud-platform" \
+--addons HorizontalPodAutoscaling,HttpLoadBalancing \
+--enable-shielded-nodes \
+--shielded-secure-boot \
+--shielded-integrity-monitoring
+```
+
+### Configurar os componentes do "migration to containers" no cluster de processamento
+```
+$ gcloud iam service-accounts create m4a-install --project=${PROJECT_ID}
+$ gcloud projects add-iam-policy-binding ${PROJECT_ID} \ 
+--member="serviceAccount:m4a-install@${PROJECT_ID}.iam.gserviceaccount.com" --role="roles/storage.admin"
+$ gcloud iam service-accounts keys create m4a-install.json \
+--iam-account=m4a-install@vibrant-sound-352319.iam.gserviceaccount.com --project=${PROJECT_ID} 
+$ gcloud container clusters get-credentials migration-processing --zone=${ZONE} --project=${PROJECT_ID} 
+$ migctl setup install --json-key=m4a-install.json
+$ migctl doctor
+```
+
+### Criar a origem da migração que representa a plataforma de origem (Compute Engine, VMWare, AWS ou Azure).
+```
+$ gcloud iam service-accounts create m4a-ce-src --project=${PROJECT_ID} 
+$ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:m4a-ce-src@${PROJECT_ID}.iam.gserviceaccount.com" --role="roles/compute.viewer" #2
+$ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:m4a-ce-src@${PROJECT_ID}.iam.gserviceaccount.com" --role="roles/compute.storageAdmin" #2
+$ gcloud iam service-accounts keys create m4a-ce-src.json \
+--iam-account=m4a-ce-src@${PROJECT_ID}.iam.gserviceaccount.com --project=${PROJECT_ID}
+$ migctl source create ce quickstart-source --project=${PROJECT_ID} --json-key=m4a-ce-src.json
+```
+
+### Determinar origem e candidatos
+
+1. Na console do GCP, em "Migrate to Containers", clique em "Source & Candidates"<br>
+2. No campo Source, selecione quickstart-source<br>
+3. Clique no botão azul "Assess Now"<br>
+4. Será apresentado a mensagem "Assessment is in progress"
+
+### Crie a migração
+
+5. Ao finalizar será apresentado "ledgermonolith-service", de tipo VM, numa lista
+6. Clique no botão de três pontos e selecione "Create Migration" (conforme apresenta a imagem abaixo)
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/create_migration.png?raw=true)
+
+7. Defina o nome da migracao "ledgermonolith-migration"
+8. Atribua o "WorkLoad Type" como Linux system container
+9. Confirme a criação da migração
+
+> Ao ir a lista de Migrações, quando o plano estiver finalizado o status será "Migration plan generated"
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/mig_plan_gen.png?raw=true)
 
