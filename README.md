@@ -210,3 +210,42 @@ $ migctl source create ce quickstart-source --project=${PROJECT_ID} --json-key=m
 
 ![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/mig_plan_gen.png?raw=true)
 
+:checkered_flag: **Passo 3 concluído com sucesso.**
+<br><br/>
+
+## Executar a Migração da Máquina Virtual
+
+1. Clique no nome do plano, e em detalhes, na aba "Data Configuration" adicione o yaml abaixo no editor
+
+```
+volumes:
+ - deploymentPvcName: ledgermonolith-db
+   folders:
+  # Folders to include in the data volume, e.g. "/var/lib/postgresql"
+  # Included folders contain data and state, and therefore are automatically excluded from a generated container image
+   - /var/lib/postgresql
+   newPvc:
+     spec:
+       accessModes:
+       - ReadWriteOnce
+       resources:
+         requests:
+           storage: 10G
+```
+
+> Isso garante o banco de dados é mantido durante a migração. Clique em Salvar.
+
+2. Clique em "Salvar" (ATENCAO)
+
+3. Na aba "Migration Plan", em deployment, verifique se o serviço tem o nome ledgermonolith-service, a porta 8080 e o protocolo TCP. O objeto será parecido com:
+
+```
+endpoints:
+  - name: ledgermonolith-service
+    port: 8080
+    protocol: TCP
+```
+
+4. Clique em "Save and Generate Artefacts"
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/gen_artefact.png?raw=true)
