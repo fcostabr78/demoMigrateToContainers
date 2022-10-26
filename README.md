@@ -87,6 +87,8 @@ As transações listadas na tela vêm da VM que fizemos o Deploy.
 :checkered_flag: **Passo 1 concluído com sucesso.** Vamos ao passo 2
 <br></br>
 
+**IMPORTANTE: Pare a VM ledgermonolith-service criada e teste listar novamente as operações bancárias. O resultado virá em branco.**
+
 ## Executar a Coleta do Ambiente
 
 1. Execute a conexão SSH com a VM instalada
@@ -264,6 +266,5 @@ endpoints:
 6. Clique no botão Download
 7. Copie a instrução $gsutil -m cp \ ...... sugerida
 8. Execute dentro da pasta {HOME}/bank-of-anthos/src/ledgermonolith/ no Cloud Shell
-
 
 
