@@ -297,6 +297,7 @@ $ k delete pods --all
 
 <br><br/>
 <hr/>
-:heart: :cloud: :rocket: **VM Migrada com Sucesso** - fernandocosta@google.com 
+:heart: :cloud: :rocket: 
+**VM Migrada com Sucesso** - fernandocosta@google.com 
 
  
