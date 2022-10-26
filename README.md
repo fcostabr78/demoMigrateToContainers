@@ -263,8 +263,28 @@ endpoints:
 ![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/artefatos_gerados.png?raw=true)
 
 5. Selecione todos os arquivos
+
 6. Clique no botão Download
+
 7. Copie a instrução $gsutil -m cp \ ...... sugerida
-8. Execute dentro da pasta {HOME}/bank-of-anthos/src/ledgermonolith/ no Cloud Shell
 
+9. Execute dentro da pasta {HOME}/bank-of-anthos/src/ledgermonolith/ no Cloud Shell
 
+10. Edite o arquivo ${HOME}/bank-of-anthos/src/ledgermonolith/deployment_spec.yaml e altere a linha 31. Troque o valor da propriedade image por docker.io/fdacosta1978/mono
+
+11. Execute as instruções abaixo. O comando SED abaixo alterará o apontamento da VM desligada ao POD criado pelo controller Statefulset. Esse pod representa a imagem que executamos o processo de migração e será criado no cluster através do script deployment_spec.yaml.
+
+```
+gcloud container clusters get-credentials boa-cluster --zone=${ZONE} --project=${PROJECT_ID}
+migctl setup install --runtime
+k apply -f ${HOME}/bank-of-anthos/src/ledgermonolith/deployment_spec.yaml
+$ cat ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml > ${HOME}/bank-of-anthos/src/ledgermonolith/config_monolitico.yaml
+$ sed -i 's/'.c.${PROJECT_ID}.internal'//g' ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml
+$ k apply -f ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml
+```
+
+12. Exclua todos os PODs para recarregar a nova configuração
+
+```
+$ k delete pods --all
+```
