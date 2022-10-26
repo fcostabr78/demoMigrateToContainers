@@ -118,20 +118,23 @@ $ ./mfit assess sample m4a-collect-ledgermonolith-service-2022-10-24-17-43.tar -
 $ exit
 ```
 
-### copia para o ambiente do Cloud Shell
+### Copie o arquivo gerado ao ambiente do Cloud Shell
 ```
-$ gcloud compute scp --tunnel-through-iap --zone "us-central1-c" --project "vibrant-sound-352319" ledgermonolith-service:~/m4a/ledgermonolith-mfit-report.json ${HOME}/
+$ gcloud compute scp --tunnel-through-iap --zone "${ZONE}" --project "${PROJECT_ID}" \
+ledgermonolith-service:~/m4a/ledgermonolith-mfit-report.json ${HOME}/
 ```
 
-### desde a console no navegador, solicite o download a máquina local
+### Desde a console no navegador, solicite o download a máquina local
 $ cloudshell download ${HOME}/ledgermonolith-mfit-report.json
 
-> agora em "Migrate To Containers", selecione "Open Fit Assessment" e abra o aquivo .json
+### Valide o fit de migração apontado pela ferramenta
+
+> Em "Migrate To Containers", selecione "Open Fit Assessment" e abra o aquivo ".json"
 > será apresentado o detalhe da migração sugerida a VM conforme a imagem abaixo
 
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/report_json.png?raw=true)
 
-
-> para ter acesso a detalhes da migracao https://cloud.google.com/migrate/containers/docs/fit-assessment-rules?hl=pt-br
+> para ter maiores informações sobre msgs apontadas na avaliação de migracao https://cloud.google.com/migrate/containers/docs/fit-assessment-rules?hl=pt-br
 
 <br><br/>
 > Na etapa a seguir, você criará o cluster do GKE usado como um cluster de processamento. É aqui que você instala o Migrate to Containers e executa a
