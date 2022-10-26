@@ -10,24 +10,24 @@
 - **Passo 4**: Executar a Migração da Máquina Virtual
 
 ## Fazer Deploy da Solução utilizando Máquina Virtual
-### Cópia do repositório
+1. Copie do repositório
 ```
 $ git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
 $ cd bank-of-anthos/
 ```
 
-### Configuração das variáveis de ambiente
+2. Configure das variáveis de ambiente
 ```
 $ export PROJECT_ID=<ID do seu projecto>
 $ export ZONE=us-central1-c
 ```
 
-### Deploy da VM Monolítica no GCP
+3. Faça o Deploy da VM Monolítica no GCP
 ```
 $ make monolith-deploy
 ```
 
-### Liberação de firewall
+4. Libere a regra de firewall
 ```
 $ gcloud compute --project=${PROJECT_ID} firewall-rules create default-allow-http  \
 --direction=INGRESS --priority=1000 --network=default --action=ALLOW  \
@@ -49,12 +49,12 @@ $ gcloud container clusters create boa-cluster \
 --shielded-integrity-monitoring
 ```
 
-#### Obter as credenciais de acesso
+1.  Obtenha as credenciais de acesso
 ```
 $ gcloud container clusters get-credentials boa-cluster --zone=${ZONE} --project=${PROJECT_ID}
 ```
 
-#### Deploy dos recursos no cluster GKE
+2. Execute o Deploy dos recursos no cluster GKE
 ```
 $ alias k=kubectl
 $ sed -i 's/\[PROJECT_ID\]/'${PROJECT_ID}'/g' ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml
@@ -70,14 +70,14 @@ $ k apply -f kubernetes-manifests/loadgenerator.yaml
 $ k get po
 ```
 
-#### Obter o IP de acesso ao produto
+3. Obtenha o IP de acesso ao produto
 ```
 $ k get svc frontendgke | awk '{print $4}'
 ```
 <br></br>
-Acessar https://**IP_obtido_no_comando_acima** para acessar o Bank of Anthos
+4. Acessar https://**IP_obtido_no_comando_acima** para acessar o Bank of Anthos
 <br></br>
-Faça o login com as credenciais padrão e veja as transações no painel. 
+5. Faça o login com as credenciais padrão e veja as transações no painel. 
 
 As transações listadas na tela vêm da VM que fizemos o Deploy.
 
@@ -87,47 +87,46 @@ As transações listadas na tela vêm da VM que fizemos o Deploy.
 
 ## Executar a Coleta do Ambiente
 
-### Executar conexão SSH com a VM instalada
+1. Execute a conexão SSH com a VM instalada
 ```
 $ gcloud compute ssh --zone "${ZONE}" "ledgermonolith-service"  --project "${PROJECT_ID}"
 ```
 
-### Download da ferramenta de coleta
+2. Faça o Download da ferramenta de coleta
 ```
 $ mkdir m4a && cd m4a
 $ curl -O "https://mfit-release.storage.googleapis.com/1.12.1/mfit-linux-collect.sh"
 $ chmod +x mfit-linux-collect.sh
 ```
 
-### Download da ferramentas de analise
+3. Faça o download da ferramentas de analise
 ```
 $ curl -O "https://mfit-release.storage.googleapis.com/1.12.1/mfit"
 $ chmod +x mfit
 ```
 
-### Execute a coleta
+4. Execute a coleta
 ```
 $ sudo ./mfit-linux-collect.sh
 ```
 
-O script de coleta gera um arquivo TAR chamado m4a-collect-ledgermonolith-service-TIMESTAMP.tar e o salva no diretório atual. O carimbo de data/hora está no formato YYYY-MM-DD-hh-mm.
+> O script de coleta gera um arquivo TAR chamado m4a-collect-ledgermonolith-service-TIMESTAMP.tar e o salva no diretório atual. O carimbo de data/hora está no formato YYYY-MM-DD-hh-mm.
 
-### Salve o retorno 
+6. Salve o retorno 
 ```
 $ ./mfit assess sample m4a-collect-ledgermonolith-service-2022-10-24-17-43.tar --format json > ledgermonolith-mfit-report.json
 $ exit
 ```
 
-### Copie o arquivo gerado ao ambiente do Cloud Shell
+7. Copie o arquivo gerado ao ambiente do Cloud Shell
 ```
 $ gcloud compute scp --tunnel-through-iap --zone "${ZONE}" --project "${PROJECT_ID}" \
 ledgermonolith-service:~/m4a/ledgermonolith-mfit-report.json ${HOME}/
 ```
-
-### Desde a console no navegador, solicite o download a máquina local
+8. Desde a console no navegador, solicite o download a máquina local
 $ cloudshell download ${HOME}/ledgermonolith-mfit-report.json
 
-### Valide o fit de migração apontado pela ferramenta
+9. Valide o fit de migração apontado pela ferramenta
 
 > Em "Migrate To Containers", selecione "Open Fit Assessment" e abra o aquivo ".json"
 > será apresentado o detalhe da migração sugerida a VM conforme a imagem abaixo
