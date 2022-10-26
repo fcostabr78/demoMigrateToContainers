@@ -275,8 +275,8 @@ endpoints:
 11. Execute as instruções abaixo. O comando SED abaixo alterará o apontamento da VM desligada ao POD criado pelo controller Statefulset. Esse pod representa a imagem que executamos o processo de migração e será criado no cluster através do script deployment_spec.yaml.
 
 ```
-gcloud container clusters get-credentials boa-cluster --zone=${ZONE} --project=${PROJECT_ID}
-migctl setup install --runtime
+$ gcloud container clusters get-credentials boa-cluster --zone=${ZONE} --project=${PROJECT_ID}
+$ migctl setup install --runtime
 k apply -f ${HOME}/bank-of-anthos/src/ledgermonolith/deployment_spec.yaml
 $ cat ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml > ${HOME}/bank-of-anthos/src/ledgermonolith/config_monolitico.yaml
 $ sed -i 's/'.c.${PROJECT_ID}.internal'//g' ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml
@@ -288,3 +288,14 @@ $ k apply -f ${HOME}/bank-of-anthos/src/ledgermonolith/config.yaml
 ```
 $ k delete pods --all
 ```
+
+13. Consulte se todos os PODs foram reiniciados e verifique o EXTERNAL-IP ao serviços frontendgke
+
+![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/console.png?raw=true)
+
+14. Abra no navegador https://**EXTERNAL_IP** para acessar o Bank of Anthos - agora estará apontando o POD que representa a VM migrada.!
+
+
+
+
+ 
