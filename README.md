@@ -249,7 +249,5 @@ endpoints:
 
 ![This is an image](https://github.com/fcostabr78/demoMigrateToContainers/blob/main/gen_artefact.png?raw=true)
 
-> Os artefatos gerados podem ser consultados via console.
-> Para no Detalhe da MIgração, clique em "Artefacts"
-> Lá estará os objects gerados: Docker File, Deployment...
-> Clique nele e será abeto a lista dos artefatos
+> Os artefatos gerados podem ser consultados via console. Para isso, em Detalhe da Migração, clique em "Artefacts"<br>
+> Lá estará os objects gerados: Docker File, Deployment. Clique nele e será abeto a lista dos artefatos registrados no Bucket<br>
